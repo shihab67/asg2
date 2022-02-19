@@ -1,67 +1,38 @@
 #include <iostream>
-#include <ctime>
-#include <cstdlib>
+#include <chrono>
 #include <algorithm>
-
 using namespace std;
 
 int main()
 {
 	int size[3] = {100000, 1000000, 10000000};
-	int array[2];
 	int i, j, k;
-	
-	for(i = 0; i < 10; i++)
+	cout << sizeof(size) / sizeof(size[0]) << endl;
+
+	for (i = 0; i < 10; i++)
 	{
-		for(j = 0; j < size[i]; j++)
+		for (k = 0; k < sizeof(size) / sizeof(size[0]); k++)
 		{
-			array[j] = rand() % size[i];
+			int *array = new int[size[k]];
+			cout << k << endl;
 
-			int length = sizeof(array) / sizeof(array[0]);
+			for (j = 0; j < size[k]; j++)
+			{
+				array[j] = rand() % size[k];
+				// 			int length = sizeof(array) / sizeof(array[0]);
+			}
 
-			clock_t start = clock();
-			sort(array, array + length);
-			clock_t end = clock();
+			auto start = chrono::steady_clock::now();
+			sort(array, array + size[k]);
+			auto end = chrono::steady_clock::now();
+			// 			for (int l = 0 ; l < size[k] ; l++) {
+			//                 cout << array[l] << endl;
+			// 			}
+			delete[] array;
 
-			cout << "Size: " << size[i] << endl;
-			cout << "Time: " << (end - start) / (double)CLOCKS_PER_SEC << endl;
+			cout << "Size: " << size[k] << endl;
+			cout << chrono::duration_cast<chrono::milliseconds>(end - start).count() << " milliseconds" << endl;
 		}
 	}
-
-	// cout << "Enter the size of the array: ";
-	// cin >> size;
-
-	// for (i = 0; i < size; i++)
-	// {
-	// 	array[i] = rand() % 100;
-	// }
-
-	// cout << "Unsorted array: ";
-	// printArray(array, size);
-
-	// clock_t startTime = clock();
-
-	// bubbleSort(array, size);
-
-	// clock_t endTime = clock();
-
-	// cout << "Sorted array: ";
-	// printArray(array, size);
-
-	// cout << "Time: " << (endTime - startTime) / (double)CLOCKS_PER_SEC << " seconds" << endl;
+	return 0;
 }
-
-// void printArray(int array[], int size)
-// {
-// 	int i;
-
-// 	for (i = 0; i < size; i++)
-// 	{
-// 		cout << array[i] << " ";
-// 	}
-// 	cout << endl;
-// }
-
-
-
-
